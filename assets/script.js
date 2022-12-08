@@ -2,6 +2,7 @@
 
 //assign variables to user prompts for password generator
 var generateBtn = document.querySelector("#generate");
+var clearBtn = document.querySelector("#clear");
 var UpperCaseChars = [
   "A",
   "B",
@@ -78,11 +79,12 @@ var SpecialChars = [
 var numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 var pwdChoice = [];
 var pwdGenerator = "";
+var passwordText = document.querySelector("#password");
 
 // Write password to the #password input
 function writePassword() {
+clearPwd();
   var password = generatePassword();
-  var passwordText = document.querySelector("#password");
   //display value as text in text area box
   passwordText.value = password;
 }
@@ -115,28 +117,44 @@ function generatePassword() {
     "Would you like to include Lowercase characters ?"
   );
   var GetNumbers = confirm("Would you like to include Numbers ?");
+  
+  if (GetLowerCase == false && GetUpperCase == false && GetNumbers == false && GetSpecialChar == false  ){
+    alert("Please choose one of the options to proceed");
+    generatePassword();
+  };
 
   //Generate your Password
   if (GetLowerCase) {
     pwdChoice = pwdChoice.concat(LowercaseChars);
   }
-  if (GetUpperCase) {
+   if (GetUpperCase) {
     pwdChoice = pwdChoice.concat(UpperCaseChars);
   }
-  if (GetSpecialChar) {
+   if (GetSpecialChar) {
     pwdChoice = pwdChoice.concat(SpecialChars);
   }
-  if (GetNumbers) {
+   if (GetNumbers) {
     pwdChoice = pwdChoice.concat(numbers);
   }
 
   //create loop to generate password randomization
   for (i = 0; i < pwdLength; i++) {
-    pwdGenerator =
-      pwdGenerator + pwdChoice[Math.floor(Math.random() * pwdChoice.length)];
+    pwdGenerator = pwdGenerator + pwdChoice[Math.floor(Math.random() * pwdChoice.length)];
   }
+
   //return value to writepassword function to display password
   return pwdGenerator;
 }
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword());
+generateBtn.addEventListener("click", writePassword)
+
+
+clearBtn.addEventListener("click", function(){
+  pwdGenerator = "";
+  passwordText.value = "";
+});
+//function for clear password button
+function clearPwd (){
+  pwdGenerator = "";
+  passwordText.value = "";
+};
